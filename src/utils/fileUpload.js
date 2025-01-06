@@ -1,10 +1,10 @@
-const { admin } = require('../config/firebase');
+const { supabase } = require('../config/supabase');
 const multer = require('multer');
 
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 20 * 1024 * 1024, // 20MB file size limit
+    fileSize: 20 * 1024 * 1024, // 20MB
   },
   fileFilter: (req, file, cb) => {
     if (
@@ -15,71 +15,50 @@ const upload = multer({
       cb(null, true);
     } else {
       cb(
-        new Error('Invalid file type, only JPEG, PNG and PDF is allowed!'),
+        new Error('Invalid file type. Only JPEG, PNG and PDF allowed.'),
         false
       );
     }
   },
 });
 
-// const uploadFile = async (file, path) => {
-//   try {
-//     const dateTime = Date.now();
-//     const fileName = `${dateTime}-${file.originalname}`;
-//     const storageRef = ref(storage, `${path}/${fileName}`);
-
-//     const snapshot = await uploadBytes(storageRef, file.buffer);
-//     const downloadURL = await getDownloadURL(snapshot.ref);
-
-//     return downloadURL;
-//   } catch (error) {
-//     console.error('Error uploading file: ', error);
-//     throw error;
-//   }
-// };
-
 const uploadFile = async (file, path) => {
   try {
-    const bucket = admin.storage().bucket();
     const dateTime = Date.now();
     const fileName = `${path}/${dateTime}-${file.originalname}`;
 
-    const fileUpload = bucket.file(fileName);
-
-    // Create write stream
-    const blobStream = fileUpload.createWriteStream({
-      metadata: {
+    const { data, error } = await supabase.storage
+      .from('kono_storage')
+      .upload(fileName, file.buffer, {
         contentType: file.mimetype,
-      },
-      resumable: file.size > 5 * 1024 * 1024, // Use resumable uploads for files >5MB
-    });
-
-    // Handle upload completion through Promise
-    const uploadPromise = new Promise((resolve, reject) => {
-      blobStream.on('error', (error) => {
-        reject(error);
+        upsert: false,
       });
 
-      blobStream.on('finish', async () => {
-        // Make the file publicly accessible
-        await fileUpload.makePublic();
+    if (error) throw error;
 
-        // Get the public URL
-        const downloadURL = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
-        resolve(downloadURL);
-      });
-    });
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from('kono_storage').getPublicUrl(fileName);
 
-    // Write file buffer to stream
-    blobStream.end(file.buffer);
-
-    // Wait for upload to complete
-    const downloadURL = await uploadPromise;
-    return downloadURL;
+    return publicUrl;
   } catch (error) {
-    console.error('Error uploading file: ', error);
+    console.error('Error uploading file:', error);
     throw error;
   }
 };
 
-module.exports = { uploadFile, upload };
+// Express route handler
+const handleFileUpload = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const downloadURL = await uploadFile(req.file, 'uploads');
+    res.json({ url: downloadURL });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { upload, uploadFile };

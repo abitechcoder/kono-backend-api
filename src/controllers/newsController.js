@@ -6,13 +6,11 @@ exports.createNews = async (req, res) => {
     let imageUrl, documentUrl;
 
     if (req.files.image) {
-      // imageUrl = await uploadFile(req.files.image[0], 'images');
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     }
 
     if (req.files.report) {
-      // documentUrl = await uploadFile(req.files.report[0], 'documents');
-      documentUrl = '';
+      documentUrl = await uploadFile(req.files.report[0], 'documents');
     }
 
     const news = await News.create({
@@ -65,13 +63,11 @@ exports.updateNews = async (req, res) => {
     let imageUrl, documentUrl;
 
     if (req.files.image) {
-      // imageUrl = await uploadFile(req.files.image[0], 'images');
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     }
 
     if (req.files.report) {
-      // documentUrl = await uploadFile(req.files.report[0], 'documents');
-      documentUrl = '';
+      documentUrl = await uploadFile(req.files.report[0], 'documents');
     }
     const [updated] = await News.update(
       {

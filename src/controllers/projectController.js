@@ -8,13 +8,11 @@ exports.createProject = async (req, res) => {
     console.log('Body:', req.body);
 
     if (req.files.image) {
-      // imageUrl = await uploadFile(req.files.image[0], 'images');
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     }
 
     if (req.files.report) {
-      // documentUrl = await uploadFile(req.files.report[0], 'documents');
-      documentUrl = '';
+      documentUrl = await uploadFile(req.files.report[0], 'documents');
     }
 
     const project = await Project.create({
@@ -73,13 +71,11 @@ exports.updateProject = async (req, res) => {
     let imageUrl, documentUrl;
 
     if (req.files.image) {
-      // imageUrl = await uploadFile(req.files.image[0], 'images');
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     }
 
     if (req.files.report) {
-      // documentUrl = await uploadFile(req.files.report[0], 'documents');
-      documentUrl = '';
+      documentUrl = await uploadFile(req.files.report[0], 'documents');
     }
     const [updated] = await Project.update(
       {

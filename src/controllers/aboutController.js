@@ -1,12 +1,12 @@
 const { About, Official } = require('../models');
+const { uploadFile } = require('../utils/fileUpload');
 
 exports.createAbout = async (req, res) => {
   try {
     let imageUrl;
 
     if (req?.files.image) {
-      // imageUrl = await uploadFile(req.files.image[0], 'images');
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     } else {
       imageUrl = '';
     }
@@ -58,8 +58,7 @@ exports.updateAbout = async (req, res) => {
     let imageUrl;
 
     if (req.files.image) {
-      // imageUrl = await uploadFile(req.files.image[0], 'images');
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     }
 
     const [updated] = await About.update(
@@ -91,8 +90,7 @@ exports.createOfficialAndChiefdom = async (req, res) => {
     let imageUrl;
 
     if (req?.files.image) {
-      // imageUrl = await uploadFile(req.files.image[0], 'images');
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     } else {
       imageUrl = '';
     }
