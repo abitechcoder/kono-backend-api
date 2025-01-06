@@ -1,13 +1,12 @@
 const { Testimonial } = require('../models');
-// const { uploadFile } = require('../utils/fileUpload');
+const { uploadFile } = require('../utils/fileUpload');
 
 exports.createTestimonial = async (req, res) => {
   try {
     let imageUrl;
 
     if (req.files.image) {
-      // imageUrl = await uploadFile(req.files.image[0], 'images');
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     }
 
     const testimonial = await Testimonial.create({
@@ -60,8 +59,7 @@ exports.updateTestimonial = async (req, res) => {
     let imageUrl;
 
     if (req.files.image) {
-      // imageUrl = await uploadFile(req.files.image[0], 'images');
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     }
 
     const [updated] = await Testimonial.update(

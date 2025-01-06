@@ -1,12 +1,12 @@
 const { Home } = require('../models');
+const { uploadFile } = require('../utils/fileUpload');
 
 exports.createHomepage = async (req, res) => {
   try {
     let imageUrl;
 
     if (req.files.image) {
-      // imageUrl = await uploadFile(req.files.image[0], "images");
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     }
 
     const homepage = await Home.create({
@@ -43,10 +43,10 @@ exports.updateHomepage = async (req, res) => {
   const homeId = req.params.id;
   try {
     if (req.files.image) {
-      console.log('Image file received', req.files.image);
-      // imageUrl = await uploadFile(req.files.logo[0], 'images');
-      imageUrl = '';
+      imageUrl = await uploadFile(req.files.image[0], 'images');
     }
+
+    console.log('Image Url:', imageUrl);
 
     const [updated] = await Home.update(
       {
