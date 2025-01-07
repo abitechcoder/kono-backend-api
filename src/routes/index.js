@@ -6,9 +6,9 @@ const newsRoutes = require('./newsRoutes');
 const testimonialRoutes = require('./testimonialRoutes');
 const aboutRoutes = require('./aboutRoutes');
 const officialRoutes = require('./officialRoutes');
+const policyRoutes = require('./policyRoutes');
 
 // const galleryRoutes = require('./galleryRoutes');
-// const reportRoutes = require('./reportRoutes');
 // const partnerRoutes = require('./partnerRoutes');
 // const teamRoutes = require('./teamRoutes');
 // const jobRoutes = require('./jobRoutes');
@@ -20,9 +20,9 @@ router.use('/news', newsRoutes);
 router.use('/testimonials', testimonialRoutes);
 router.use('/about', aboutRoutes);
 router.use('/official', officialRoutes);
+router.use('/policy', policyRoutes);
 
 // router.use('/gallery', galleryRoutes);
-// router.use('/reports', reportRoutes);
 // router.use('/partners', partnerRoutes);
 // router.use('/team', teamRoutes);
 // router.use('/job', jobRoutes);
