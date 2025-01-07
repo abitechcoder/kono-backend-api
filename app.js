@@ -12,7 +12,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://sendsierraleone.com'],
+  origin: [
+    'http://localhost:5173',
+    'https://sendsierraleone.com',
+    'http://konocouncil.kakebo.sendsierraleone.com',
+    'https://kono-website-5cf52.web.app',
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
