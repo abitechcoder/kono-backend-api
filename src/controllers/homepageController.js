@@ -23,6 +23,18 @@ exports.createHomepage = async (req, res) => {
   }
 };
 
+exports.getHomepage = async (req, res) => {
+  try {
+    const homepage = await Home.findAll({});
+    res.json(homepage);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error retrieving homepage information',
+      error: error.message,
+    });
+  }
+};
+
 exports.getHomepageById = async (req, res) => {
   try {
     const homepage = await Home.findByPk(req.params.id);

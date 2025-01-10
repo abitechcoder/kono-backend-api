@@ -32,7 +32,9 @@ exports.createPolicy = async (req, res) => {
 
 exports.getPolicies = async (req, res) => {
   try {
-    const policies = await Policy.findAll();
+    const policies = await Policy.findAll({
+      order: [['createdAt', 'DESC']],
+    });
     res.json(policies);
   } catch (error) {
     res.status(500).json({

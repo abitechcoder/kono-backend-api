@@ -8,6 +8,7 @@ router.post(
   upload.fields([{ name: 'image', maxCount: 1 }]),
   homepageController.createHomepage
 );
+router.get('/', homepageController.getHomepage);
 router.get('/:id', homepageController.getHomepageById);
 router.put(
   '/:id',
